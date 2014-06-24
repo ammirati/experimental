@@ -28,6 +28,10 @@ class Workout(object):
     def __init__(self, client):
         self.date = datetime.date.today()
         self.client = client
+        self.values = {}
+
+    def set_value(self, name, value):
+        self.values[name] = value
 
 
 class ClientTest(unittest.TestCase):
@@ -46,5 +50,9 @@ print clients
 print clients[0].age()
 
 w = Workout(clients[0])
-# w.set('benchpress', 100, reps=10)
+w.set_value('benchpress', 100)
+w.set_value('shoulderpress', 70)
 print w
+print w.values
+
+
