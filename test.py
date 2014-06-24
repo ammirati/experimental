@@ -1,3 +1,5 @@
+#!/bin/python
+
 import datetime
 from dateutil.relativedelta import relativedelta
 import unittest
