@@ -1,4 +1,4 @@
-#!/bin/python
+# Copyright 2014 QCF
 
 import datetime
 from dateutil.relativedelta import relativedelta
