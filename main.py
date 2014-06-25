@@ -2,15 +2,16 @@
 
 import datetime
 from dateutil.relativedelta import relativedelta
+from google.appengine.ext import ndb
 
 
-class Client(object):
+class Client(ndb.Model):
     """
     This represents each client of the gym.
     """
-    def __init__(self, name, dob):
-        self.name = name
-        self.dob = dob
+
+    name = ndb.StringProperty()
+    dob = ndb.DateProperty()
 
     def __str__(self):
         return 'Client[%s:%s]' % (self.name, self.dob)
@@ -22,12 +23,16 @@ class Client(object):
         return relativedelta(datetime.date.today(), self.dob).years
 
 
-class Workout(object):
+class Workout(ndb.Model):
 
-    def __init__(self, client):
-        self.date = datetime.date.today()
-        self.client = client
-        self.values = {}
+    class Exercise(ndb.Model):
+        name = ndb.StringProperty()
+        weight = ndb.IntegerProperty()
+        reps = ndb.IntegerProperty()
 
-    def set_value(self, name, value):
-        self.values[name] = value
+    date = ndb.DateProperty()
+    client = ndb.KeyProperty()
+    exercises = ndb.StructuredProperty(Exercise, repeated=True)
+
+    def set_value(self, name, weight, reps):
+        self.exercises.append(Workout.Exercise(name=name, weight=weight, reps=reps))
