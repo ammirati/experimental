@@ -1,58 +1,47 @@
 # Copyright 2014 QCF
 
 import datetime
-from dateutil.relativedelta import relativedelta
 import unittest
+# TODO(burdon): Need PyCharm Pro to run with App Engine.
+# from google.appengine.ext import testbed
+
+from main import Client, Workout
 
 
-class Client(object):
-    """
-    This represents each client of the gym.
-    """
-    def __init__(self, name, dob):
-        self.name = name
-        self.dob = dob
+class DataTest(unittest.TestCase):
 
-    def __str__(self):
-        return 'Client[%s:%s]' % (self.name, self.dob)
+    # def setUp(self):
+    #     """
+    #     Set-up the database testbed.
+    #     https://developers.google.com/appengine/docs/python/tools/localunittesting#Python_Writing_Datastore_and_memcache_tests
+    #     """
+    #     self.testbed = testbed.Testbed()
+    #     self.testbed.activate()
+    #     self.testbed.init_datastore_v3_stub()
+    #     # self.testbed.init_memcache_stub()
+    #     # self.testbed.init_search_stub()
+    #
+    # def tearDown(self):
+    #     self.testbed.deactivate()
+    #
+    # def test_store(self):
+    #     pass
 
-    def __repr__(self):
-        return self.__str__()
+    def test_models(self):
+        clients = [
+            Client('Rich', datetime.date(1969, 6, 11)),
+            Client('Jay', datetime.date(1972, 6, 5)),
+            Client('Tony', datetime.date(1973, 6, 17))
+        ]
+        print clients
+        print clients[0].age()
 
-    def age(self):
-        return relativedelta(datetime.date.today(), self.dob).years
-
-
-class Workout(object):
-
-    def __init__(self, client):
-        self.date = datetime.date.today()
-        self.client = client
-        self.values = {}
-
-    def set_value(self, name, value):
-        self.values[name] = value
-
-
-class ClientTest(unittest.TestCase):
+        workout = Workout(clients[0])
+        workout.set_value('benchpress', 100)
+        workout.set_value('shoulderpress', 70)
+        print workout
+        print workout.values
 
     def test_age(self):
         c = Client('Test', datetime.date.today())
         self.assertEquals(0, c.age())
-
-
-clients = []
-clients.append(Client('Rich', datetime.date(1969, 6, 11)))
-clients.append(Client('Jay',  datetime.date(1972, 6, 5)))
-clients.append(Client('Tony', datetime.date(1973, 6, 17)))
-
-print clients
-print clients[0].age()
-
-w = Workout(clients[0])
-w.set_value('benchpress', 100)
-w.set_value('shoulderpress', 70)
-print w
-print w.values
-
-
