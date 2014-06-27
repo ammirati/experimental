@@ -3,8 +3,11 @@
 # Add the Google SDK
 import sys
 sys.path.insert(0, 'tools/google_appengine')
+
 import dev_appserver
 dev_appserver.fix_sys_path()
+#print sys.path
+#exit()
 from google.appengine.ext import testbed
 
 import datetime
@@ -13,8 +16,9 @@ import unittest
 from main import Client, Workout
 
 
+# https://docs.python.org/2/library/unittest.html
 class DataTest(unittest.TestCase):
-
+    
     def setUp(self):
         """
         Set-up the database testbed.
@@ -51,3 +55,16 @@ class DataTest(unittest.TestCase):
     def test_age(self):
         c = Client(name='Test', dob=datetime.date.today())
         self.assertEquals(0, c.age())
+        
+    def test_sanity(self):
+        print 'ok'
+        
+
+if __name__ == '__main__':
+    import unittest.loader
+    suite = unittest.loader.TestLoader().discover('.')
+
+    print 'Starting tests...'
+    unittest.TextTestRunner(verbosity=2).run(suite)
+
+
