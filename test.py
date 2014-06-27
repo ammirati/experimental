@@ -2,7 +2,7 @@
 
 # Add the Google SDK
 import sys
-sys.path.insert(0, 'tools/google_appengine')
+sys.path.insert(0, '/usr/local/google_appengine')
 
 import dev_appserver
 dev_appserver.fix_sys_path()
