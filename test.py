@@ -58,6 +58,7 @@ class DataTest(unittest.TestCase):
         
     def test_sanity(self):
         print 'ok'
+        # self.fail()
         
 
 if __name__ == '__main__':
