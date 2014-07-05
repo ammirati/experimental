@@ -10,17 +10,34 @@ class Client(ndb.Model):
     This represents each client of the gym.
     """
 
-    name = ndb.StringProperty()
-    dob = ndb.DateProperty()
+    name = ndb.StringProperty()  # Keyword arguments mapping to the model's properties.
+    dob = ndb.DateProperty()    # Use these arguments when instantiating Client.
 
     def __str__(self):
+    # Defines what print will do, here it returns name and dob.
         return 'Client[%s:%s]' % (self.name, self.dob)
 
     def __repr__(self):
         return self.__str__()
 
     def age(self):
+    # This will return the clients age based on their dob.
         return relativedelta(datetime.date.today(), self.dob).years
+
+
+class Trainer(ndb.Model):
+    """
+    This represents each trainer at the gym.
+    """
+
+    name = ndb.StringProperty()
+
+    def __str__(self):
+    # Defines what print will do, here it returns name.
+        return 'Trainer[%s]' % self.name
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class Workout(ndb.Model):
