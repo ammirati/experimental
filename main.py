@@ -41,15 +41,27 @@ class Trainer(ndb.Model):
 
 
 class Workout(ndb.Model):
-
+    # Represents each day's workout.
     class Exercise(ndb.Model):
+        # Represents each exercise with load and reps.
         name = ndb.StringProperty()
         weight = ndb.IntegerProperty()
         reps = ndb.IntegerProperty()
 
+    class Goal(ndb.Model):
+        # Goals for the workout.
+        name = ndb.StringProperty()
+        goal_weight = ndb.IntegerProperty()
+        goal_reps = ndb.IntegerProperty()
+
     date = ndb.DateProperty()
     client = ndb.KeyProperty()
     exercises = ndb.StructuredProperty(Exercise, repeated=True)
+    lift_goals = ndb.StructuredProperty(Goal, repeated=True)
 
     def set_value(self, name, weight, reps):
         self.exercises.append(Workout.Exercise(name=name, weight=weight, reps=reps))
+
+    def make_goal(self, name, goal_weight, goal_reps):
+        self.lift_goals.append(Workout.Goal(name=name, goal_weight=goal_weight, goal_reps=goal_reps))
+

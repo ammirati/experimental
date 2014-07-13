@@ -47,6 +47,24 @@ class DataTest(unittest.TestCase):
         self.assertEqual(6, product(2, 3))
         self.assertEqual(32, product(2, product(2, 8)))
 
+        def derivative_calc(integer, variable, exponent):
+            # Returns the derivative of single-variable algebraic functions.
+            leading_coefficient = int(integer) * int(exponent)
+            new_exp = int(exponent) - 1
+            return str(leading_coefficient) + variable + "^" + str(new_exp)
+
+        self.assertEqual('6x^2', derivative_calc(2, 'x', 3))
+
+        def facts(some_int):
+        # A recursive function for finding factorial of any integer.
+            if some_int <= 1:
+                the_factorial = some_int
+            else:
+                the_factorial = some_int * facts(some_int - 1)
+            return the_factorial
+
+        self.assertEqual(24, facts(4))
+
         def fibonacci(end_point):
         # This will return the requested number of entries from the Fibonacci sequence.
             fib_list = [0, 1]
@@ -58,6 +76,31 @@ class DataTest(unittest.TestCase):
             return fib_list
 
         self.assertEqual([0, 1, 1, 2, 3], fibonacci(5))
+
+        def isPalindrome(s):
+            """
+            Assumes s is a string. Returns True if letters in s form a palindrome;
+            Otherwise returns False. Non-letters and caps are ignored.
+            """
+
+            def toChars(s):
+                s = s.lower()
+                letters = ''
+                for c in s:
+                    if c in 'abcdefghijklmnopqrstuvwxyz':
+                        letters = letters + c
+                return letters
+
+            def isPal(s):
+                if len(s) <= 1:
+                    return True
+                else:
+                    return s[0] == s[-1] and isPal(s[1:-1])
+
+            return isPal(toChars(s))
+
+        self.assertEqual(False, isPalindrome('tony is great'))
+        self.assertEqual(True, isPalindrome('Never odd or even'))
 
     def test_store(self):
         clients = [
@@ -83,15 +126,17 @@ class DataTest(unittest.TestCase):
 
         self.assertEqual(2, len(Trainer.query().fetch()))
 
-        workout = Workout(client=clients[0].key)
-        workout.set_value('benchpress', 100, 10)
-        workout.set_value('shoulderpress', 70, 10)
+        workout = Workout(client=clients[0].key, date=datetime.date.today())
+        workout.set_value('bench press', 100, 10)
+        workout.set_value('shoulder press', 70, 10)
+        workout.make_goal('bench press', 120, 8)
+        workout.make_goal('shoulder press', 75, 12)
         workout.put()
 
         print workout
 
     def test_age(self):
-        c = Client(name='Test', dob=datetime.date.today())  # creates a "Test" Client object
+        c = Client(name='Test', dob=datetime.date.today())
         self.assertEquals(0, c.age())
 
     def test_query(self):
